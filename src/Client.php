@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CdekSDK2;
 
 use CdekSDK2\Actions\Barcodes;
+use CdekSDK2\Actions\Calculations;
 use CdekSDK2\Actions\Intakes;
 use CdekSDK2\Actions\Invoices;
 use CdekSDK2\Actions\LocationCities;
@@ -21,6 +22,7 @@ use CdekSDK2\Exceptions\AuthException;
 use CdekSDK2\Exceptions\ParsingException;
 use CdekSDK2\Http\Api;
 use CdekSDK2\Http\ApiResponse;
+use Exception;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
 use JMS\Serializer\Serializer;
@@ -73,6 +75,11 @@ class Client
      * @var Invoices
      */
     private $invoices;
+
+    /**
+     * @var Calculations
+     */
+    private $calculations;
 
     /**
      * @var LocationRegions
@@ -299,10 +306,21 @@ class Client
     }
 
     /**
+     * @return Calculations
+     */
+    public function calculations(): Calculations
+    {
+        if ($this->calculations === null) {
+            $this->calculations = new Calculations($this->http_client, $this->serializer);
+        }
+        return $this->calculations;
+    }
+
+    /**
      * @param ApiResponse $response
      * @param string $className
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
     public function formatResponse(ApiResponse $response, string $className): Response
     {
@@ -325,14 +343,13 @@ class Client
      * @param ApiResponse $response
      * @param string $className
      * @return CityList|RegionList|PickupPointList|WebHookList
-     * @throws \Exception
+     * @throws Exception
      */
     public function formatResponseList(ApiResponse $response, string $className)
     {
         if (class_exists($className)) {
             $body = '{"items":' . $response->getBody() . '}';
-            $result = $this->serializer->deserialize($body, $className, 'json');
-            return $result;
+            return $this->serializer->deserialize($body, $className, 'json');
         }
 
         throw new ParsingException('Class ' . $className . ' not found');
