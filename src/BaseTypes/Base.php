@@ -58,6 +58,15 @@ class Base
         return $validation->passes();
     }
 
+
+    /**
+     * @return array
+     */
+    public function getValidationErrors(): array
+    {
+        return $this->validationErrors;
+    }
+
     /**
      * Создание объекта из массива
      * @param array $data
