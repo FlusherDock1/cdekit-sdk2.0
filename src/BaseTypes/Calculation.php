@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CdekSDK2\BaseTypes;
 
-use CdekSDK2\Dto\Statuses;
-use JMS\Serializer\Annotation\SkipWhenEmpty;
 use JMS\Serializer\Annotation\Type;
 
 /**
@@ -44,15 +42,15 @@ class Calculation extends Base
 
     /**
      * Адрес отправления
-     * @Type("CdekSDK2\BaseTypes\Location")
-     * @var Location
+     * @Type("CdekSDK2\BaseTypes\CalculationLocation")
+     * @var CalculationLocation
      */
     public $from_location;
 
     /**
      * Адрес получения
-     * @Type("CdekSDK2\BaseTypes\Location")
-     * @var Location
+     * @Type("CdekSDK2\BaseTypes\CalculationLocation")
+     * @var CalculationLocation
      */
     public $to_location;
 
@@ -65,8 +63,8 @@ class Calculation extends Base
 
     /**
      * Список информации по местам
-     * @Type("array<CdekSDK2\BaseTypes\Package>")
-     * @var Package[]
+     * @Type("array<CdekSDK2\BaseTypes\CalculationPackage>")
+     * @var CalculationPackage[]
      */
     public $packages;
 
@@ -83,7 +81,7 @@ class Calculation extends Base
             'from_location' => [
                 'required',
                 function ($value) {
-                    if ($value instanceof Location) {
+                    if ($value instanceof CalculationLocation) {
                         return $value->validate();
                     }
                 }
@@ -91,7 +89,7 @@ class Calculation extends Base
             'to_location' => [
                 'required',
                 function ($value) {
-                    if ($value instanceof Location) {
+                    if ($value instanceof CalculationLocation) {
                         return $value->validate();
                     }
                 }
@@ -104,7 +102,7 @@ class Calculation extends Base
                     }
                     $i = 0;
                     foreach ($value as $item) {
-                        if ($item instanceof Package) {
+                        if ($item instanceof CalculationPackage) {
                             $i += (int)$item->validate();
                         }
                     }
