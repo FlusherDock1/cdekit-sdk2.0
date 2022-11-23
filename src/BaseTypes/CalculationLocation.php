@@ -85,7 +85,6 @@ class CalculationLocation extends Base
     {
         parent::__construct($param);
         $this->rules = [
-            'address' => 'string',
             'code' => 'numeric',
             'postal_code' => 'alpha',
             'country_code' => 'alpha:2',
