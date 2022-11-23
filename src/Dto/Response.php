@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CdekSDK2\Dto;
 
 use CdekSDK2\BaseTypes\Barcode;
-use CdekSDK2\BaseTypes\Calculation;
 use CdekSDK2\BaseTypes\Intake;
 use CdekSDK2\BaseTypes\Invoice;
 use CdekSDK2\BaseTypes\Order;
